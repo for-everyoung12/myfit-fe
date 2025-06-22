@@ -20,7 +20,7 @@ const HeroSection = () => {
           </button>
         </div>
         <button className="px-8 py-3 rounded-full border border-white bg-black hover:bg-white hover:text-black transition-all">
-          Download
+          <Link to="/download">Download</Link>
         </button>
       </div>
 

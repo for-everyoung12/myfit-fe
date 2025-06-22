@@ -1,5 +1,6 @@
 import React from 'react';
 import section from '../assets/section1.png';
+import { Link } from 'react-router-dom';
 
 const ProductSection = () => {
 
@@ -18,7 +19,7 @@ const ProductSection = () => {
             </p>
             <div className="relative inline-block rounded-full p-[2px] bg-[linear-gradient(90deg,_#5361F6_0%,_#28D2FC_38%,_#4361EE_76%,_#4DE8FF_100%)]">
               <button className="px-8 py-3 rounded-full bg-black text-white border border-transparent hover:bg-cyan-500 hover:text-black transition-all w-full h-full">
-                Product
+                <Link to="/download">Download</Link>
               </button>
             </div>
           </div>

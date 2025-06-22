@@ -4,6 +4,7 @@ import HomePage from './pages/Home';
 import Product from './pages/Product';
 import Navbar from './components/Navbar';
 import BackgroundEffect from './components/BackgroundEffect';
+import Dowload from './pages/Dowload';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/product" element={<Product />} />
+        <Route path="/download" element={<Dowload/>}/>
       </Routes>
     </div>
     </div>
