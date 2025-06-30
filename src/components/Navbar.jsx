@@ -1,16 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
-import { Search, User } from 'lucide-react';
 
 const Navbar = () => {
   return (
     <header className="z-20 relative flex justify-between items-center px-8 py-6">
-      <Link to="/"> 
-        <img src={logo} alt="MyFit Logo" className="h-8" />
-      </Link>
-      <nav className="hidden md:flex gap-16 text-[20px]">
-        <Link to="/product" className="hover:text-cyan-400">Product</Link>
+      <div className="ml-20">
+        <Link to="/">
+          <img src={logo} alt="MyFit Logo" className="h-8" />
+        </Link>
+      </div>
+
+      <nav className="hidden md:flex gap-20 text-[20px]">
+        <Link to="/" className="hover:text-cyan-400">Home</Link>
         <Link to="/about-us" className="hover:text-cyan-400">About us</Link>
         <Link to="/services" className="hover:text-cyan-400">Services</Link>
         <Link to="/contact" className="hover:text-cyan-400">Contact</Link>

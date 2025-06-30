@@ -1,13 +1,14 @@
 import React from 'react';
-import HeroSection from '../components/HeroSection';
-import BackgroundEffect from '../components/BackgroundEffect';
+import { HeroSection } from '../components/HomePage/HeroSection';
+import { ServiceInfo } from '../components/HomePage/ServiceInfo';
+
 
 
 const Home = () => {
   return (
    <div className="">
-      <HeroSection />
-      <BackgroundEffect />
+      <HeroSection/>
+      <ServiceInfo/>
     </div>
   );
 };
