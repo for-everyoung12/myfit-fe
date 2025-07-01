@@ -26,7 +26,7 @@ export const ServiceInfo = () => {
 
                     <h2 className="text-[55px] md:text-4xl leading-snug font-poppins">
                         <span className="font-semibold text-white">Thử đồ online</span><br />
-                        <span className="font-bold text-cyan-400">Tối ưu phong cách</span>
+                        <span className="font-bold text-[#18FFFF]">Tối ưu phong cách</span>
                     </h2>
 
 
