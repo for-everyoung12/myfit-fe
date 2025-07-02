@@ -14,7 +14,7 @@ export const HeroSection = () => {
       {/* Background Grid */}
       <div className="absolute inset-0 cyber-grid opacity-30"></div>
       {/* Main Content Container */}
-      <div className="container mx-auto px-6 py-20 max-w-8xl">
+      <div className="container mx-auto px-20 py-20 max-w-8xl">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="space-y-8">
