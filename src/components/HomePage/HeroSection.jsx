@@ -13,21 +13,22 @@ export const HeroSection = () => {
 
       {/* Background Grid */}
       <div className="absolute inset-0 cyber-grid opacity-30"></div>
+
       {/* Main Content Container */}
-      <div className="container mx-auto px-20 py-20 max-w-8xl">
+      <div className="container mx-auto px-6 sm:px-12 py-20 max-w-8xl">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="space-y-8">
             <div className="space-y-4">
-              <h1 className="text-5xl lg:text-[66px] font-bold leading-tight text-[#18FFFF]">
+              <h1 className="text-4xl sm:text-5xl lg:text-[66px] font-bold leading-tight text-[#18FFFF]">
                 Let's MyFit
               </h1>
-              <h2 className="text-3xl lg:text-[66px] font-bold text-white whitespace-nowrap">
+              <h2 className="text-2xl sm:text-3xl lg:text-[66px] font-bold text-white whitespace-nowrap">
                 Fit your style - Fit your life
               </h2>
             </div>
 
-            <p className="text-[18px] text-white max-w-lg">
+            <p className="text-[16px] sm:text-[18px] text-white max-w-lg">
               Trải nghiệm thử đồ ảo, tư vấn cá nhân hóa và mua sắm thông minh.
               Định nghĩa lại cách bạn tương tác với thời trang.
             </p>
@@ -36,7 +37,7 @@ export const HeroSection = () => {
                 <img
                   src={learnMoreIcon}
                   alt="Learn More Icon"
-                  className="w-15 h-15"
+                  className="w-12 h-12 sm:w-15 sm:h-15"
                 />
                 <span className="text-cyan-400 font-medium">Learn More</span>
               </div>
@@ -48,7 +49,7 @@ export const HeroSection = () => {
             <img
               src={vr}
               alt="VR"
-              className="w-full max-w-[900px] h-auto object-contain hidden xl:block"
+              className="w-full max-w-[600px] sm:max-w-[900px] h-auto object-contain"
             />
 
             {/* Light blobs near image */}
