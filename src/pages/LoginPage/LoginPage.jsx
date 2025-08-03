@@ -1,16 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
+import { loginUser } from '../../services/auth.service';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -25,10 +22,8 @@ const LoginPage = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5093/api/v1/Auth/login', formData);
-      const token = response.data.data;
-
-      login(token); // Cập nhật context
+      const token = await loginUser(formData);
+      login(token);
       navigate('/');
     } catch (err) {
       console.error(err);
@@ -41,13 +36,8 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#020c1b] to-[#0a1d37] text-white flex items-center justify-center px-4">
       <div className="bg-[#0a1d37] p-10 rounded-2xl shadow-xl w-full max-w-md border border-cyan-600/30">
-        <h2 className="text-3xl font-bold text-center text-cyan-400 mb-8">
-          Welcome Back
-        </h2>
-
-        {error && (
-          <p className="text-red-500 text-center text-sm mb-4">{error}</p>
-        )}
+        <h2 className="text-3xl font-bold text-center text-cyan-400 mb-8">Welcome Back</h2>
+        {error && <p className="text-red-500 text-center text-sm mb-4">{error}</p>}
 
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
@@ -78,11 +68,9 @@ const LoginPage = () => {
             />
           </div>
 
-          <div className="flex justify-between text-sm text-gray-400">
-            <Link to="/forgot-password" className="hover:text-cyan-400">
-              Forgot Password?
-            </Link>
-          </div>
+          {/* <div className="flex justify-between text-sm text-gray-400">
+            <Link to="/forgot-password" className="hover:text-cyan-400">Forgot Password?</Link>
+          </div> */}
 
           <button
             type="submit"
