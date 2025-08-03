@@ -6,6 +6,8 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [roleId, setRoleId] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -14,6 +16,8 @@ export const AuthProvider = ({ children }) => {
       try {
         const decoded = jwtDecode(token);
         setUsername(decoded?.username || '');
+        setEmail(decoded?.email || '');
+        setRoleId(decoded?.roleId || '');
       } catch (e) {
         console.error('Invalid token');
       }
@@ -24,6 +28,8 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('token', token);
     const decoded = jwtDecode(token);
     setUsername(decoded?.username || '');
+    setEmail(decoded?.email || '');
+    setRoleId(decoded?.roleId || '');
     setIsLoggedIn(true);
   };
 
@@ -31,10 +37,12 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
     setUsername('');
+    setEmail('');
+    setRoleId('');
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, username, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, username, email, roleId, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

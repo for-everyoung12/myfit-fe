@@ -96,22 +96,33 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
+      {/* Mobile Menu */}
       {isMenuOpen && (
         <nav ref={menuRef} className="absolute top-0 left-0 w-full bg-gray-800 p-6 md:hidden z-30">
           <Link to="/" className="block text-white py-2 hover:text-cyan-400">Home</Link>
           <Link to="/about" className="block text-white py-2 hover:text-cyan-400">About us</Link>
           <Link to="/services" className="block text-white py-2 hover:text-cyan-400">Services</Link>
           <Link to="/contact" className="block text-white py-2 hover:text-cyan-400">Contact</Link>
-          {isLoggedIn && (
+
+          {isLoggedIn ? (
             <button
               onClick={handleLogout}
               className="text-white hover:text-red-400 py-2"
             >
               Logout
             </button>
+          ) : (
+            <Link
+              to="/login"
+              className="block text-white py-2 hover:text-cyan-400"
+              onClick={() => setIsMenuOpen(false)} 
+            >
+              Login
+            </Link>
           )}
         </nav>
       )}
+
     </header>
   );
 };
