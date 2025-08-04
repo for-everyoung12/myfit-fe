@@ -1,5 +1,6 @@
 import React from 'react';
 import { Phone, Clock, Headphones } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -10,10 +11,10 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-semibold text-lg mb-4">COMPANY INFO</h3>
             <p className="text-sm leading-relaxed mb-4">
-              Reach out to us anytime and lets create a better future for all of us. 
+              Reach out to us anytime and lets create a better future for all of us.
               Together, forever. We are open to all types of collab offers and tons more.
             </p>
-            
+
             <div className="space-y-3">
               <div className="flex items-center">
                 <Clock size={16} className="mr-3 text-blue-400" />
@@ -22,7 +23,7 @@ const Footer = () => {
                   <div className="text-xs">Monday-Friday: 9 AM-5 PM PST</div>
                 </div>
               </div>
-              
+
               <div className="flex items-center">
                 <Headphones size={16} className="mr-3 text-blue-400" />
                 <div>
@@ -39,11 +40,11 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center">
                 <span className="w-4 h-4 bg-blue-400 rounded-full mr-3 flex-shrink-0"></span>
-                <span className="text-sm">info@techyessolutions.com</span>
+                <span className="text-sm">myfitarofficial@gmail.com</span>
               </div>
               <div className="flex items-center">
                 <Phone size={16} className="mr-3 text-blue-400" />
-                <span className="text-sm">858-227-4578</span>
+                <span className="text-sm">092 771 55 15</span>
               </div>
             </div>
           </div>
@@ -52,12 +53,12 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-semibold text-lg mb-4">OUR SERVICES</h3>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-white transition-colors">Information Systems Strategy</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Custom Software</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Integration Services</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Business Automation</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Web, Ecommerce & Mobile Apps</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Creative</a></li>
+              <li><Link to="/services" onClick={() => window.scrollTo(0, 0)} className="hover:text-white transition-colors">Information Systems Strategy</Link></li>
+              <li><Link to="/services" onClick={() => window.scrollTo(0, 0)} className="hover:text-white transition-colors">Custom Software</Link></li>
+              <li><Link to="/services" onClick={() => window.scrollTo(0, 0)} className="hover:text-white transition-colors">Integration Services</Link></li>
+              <li><Link to="/services" onClick={() => window.scrollTo(0, 0)} className="hover:text-white transition-colors">Business Automation</Link></li>
+              <li><Link to="/services" onClick={() => window.scrollTo(0, 0)} className="hover:text-white transition-colors">Web, Ecommerce & Mobile Apps</Link></li>
+              <li><Link to="/services" onClick={() => window.scrollTo(0, 0)} className="hover:text-white transition-colors">Creative</Link></li>
             </ul>
           </div>
 
