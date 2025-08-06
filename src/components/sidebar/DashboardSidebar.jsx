@@ -2,6 +2,8 @@ import {
   Users,
   LayoutDashboard,
   ReceiptText,
+  Package,
+  DollarSign,
   LogOut,
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -13,6 +15,8 @@ const sidebarConfig = {
     { title: "Reports", path: "/dashboard", icon: LayoutDashboard },
     { title: "Users", path: "/dashboard/users", icon: Users },
     { title: "Transactions", path: "/dashboard/transactions", icon: ReceiptText },
+    { title: "Plans", path: "/dashboard/plans", icon: Package},
+    { title: "Subscriptions", path: "/dashboard/subscriptions", icon: DollarSign },
   ],
 };
 
