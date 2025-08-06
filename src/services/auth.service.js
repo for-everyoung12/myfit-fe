@@ -11,3 +11,13 @@ export const registerUser = async (data) => {
   const response = await axios.post(`${API_BASE_URL}/api/v1/Auth/register`, data);
   return response.data;
 };
+
+export const getAllUsers = async () => {
+  const token = localStorage.getItem('token');
+  const response = await axios.get(`${API_BASE_URL}/api/v1/Users`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data.data;
+};
