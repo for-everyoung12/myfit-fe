@@ -3,7 +3,8 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import PublicLayout from './layouts/PublicLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 import { AuthContext } from './context/AuthContext';
-
+import ProtectedRoute from './components/ProtectedRoute';
+import ScrollToTop from "./components/ScrollToTop";
 // Public pages
 const HomePage = lazy(() => import('./pages/Home'));
 const Dowload = lazy(() => import('./pages/Dowload'));
@@ -24,8 +25,7 @@ const Subcriptions = lazy(() => import('./pages/Admin/Subcriptions'));
 const RedirectAfterLogin = () => {
   const { isLoggedIn, roleId } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  const roleIdAdmin = "661fcf75e40000551e02a001"; 
+  const roleIdAdmin = "661fcf75e40000551e02a001";
 
   useEffect(() => {
     if (!isLoggedIn) return;
@@ -41,8 +41,15 @@ const RedirectAfterLogin = () => {
 };
 
 function App() {
+  const { loading } = useContext(AuthContext);
+
+  if (loading) {
+    return <div className="text-center py-20">Đang tải dữ liệu người dùng...</div>;
+  }
+
   return (
     <Suspense fallback={<div className="text-center py-20">Đang tải trang...</div>}>
+      <ScrollToTop />
       <RedirectAfterLogin />
       <Routes>
         {/* Public layout routes */}
@@ -58,7 +65,14 @@ function App() {
         </Route>
 
         {/* Admin dashboard layout routes */}
-        <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["661fcf75e40000551e02a001"]}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route index element={<ReportsPage />} />
           <Route path="users" element={<UserManagementPage />} />
           <Route path="transactions" element={<TransactionPage />} />
