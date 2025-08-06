@@ -40,7 +40,8 @@ const PlanInfo = () => {
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
+      {/* ✅ Grid tối đa 4 cột trên màn hình lớn */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 max-w-7xl mx-auto">
         {plans.map((plan) => {
           const discountedPrice = plan.price * (1 - plan.discountPercent / 100);
           const isCurrentPlan =
@@ -66,7 +67,7 @@ const PlanInfo = () => {
                 />
                 <h3 className="text-2xl font-bold">{plan.name}</h3>
 
-                {/* Badge đặc biệt cho gói BETA */}
+                {/* 🔥 Badge cho gói BETA */}
                 {isBetaPlan && (
                   <span className="text-xs bg-pink-500 text-white px-3 py-1 rounded-full font-bold mt-2 animate-pulse">
                     Đặc biệt
@@ -79,7 +80,7 @@ const PlanInfo = () => {
                   <span className="text-base">k</span>
                 </p>
 
-                {/* Giá gốc nếu giảm */}
+                {/* Giá gốc nếu có giảm */}
                 {plan.discountPercent > 0 && (
                   <p className="text-sm text-gray-400 line-through">
                     {(plan.price / 1000).toFixed(2)} k
