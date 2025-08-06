@@ -21,3 +21,13 @@ export const getAllUsers = async () => {
   });
   return response.data.data;
 };
+
+export const getCurrentUser = async () => {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(`${API_BASE_URL}/api/v1/Users/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data.data;
+};
