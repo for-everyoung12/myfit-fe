@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Select from "react-select";
 import { getAllUsers } from "../../services/auth.service";
 import { getAllPlans } from "../../services/plan.service";
 import { enrollPlan } from "../../services/payment.service";
@@ -7,6 +8,8 @@ const UserManagementPage = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [plans, setPlans] = useState([]);
+  const [banks, setBanks] = useState([]);
+  const [bankOptions, setBankOptions] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -46,6 +49,22 @@ const UserManagementPage = () => {
     setFilteredUsers(filtered);
   };
 
+  const fetchBanks = async () => {
+    try {
+      const res = await fetch("https://api.vietqr.io/v2/banks");
+      const data = await res.json();
+      setBanks(data.data);
+      setBankOptions(
+        data.data.map((bank) => ({
+          value: bank.shortName,
+          label: `${bank.shortName} - ${bank.name}`,
+        }))
+      );
+    } catch (error) {
+      console.error("Lỗi khi lấy danh sách ngân hàng:", error);
+    }
+  };
+
   const openModal = async (user) => {
     setSelectedUser(user);
     setIsModalOpen(true);
@@ -60,8 +79,9 @@ const UserManagementPage = () => {
     try {
       const planData = await getAllPlans();
       setPlans(planData);
+      await fetchBanks();
     } catch (error) {
-      console.error("Lỗi khi load plans:", error);
+      console.error("Lỗi khi load dữ liệu:", error);
     }
   };
 
@@ -121,7 +141,9 @@ const UserManagementPage = () => {
                 <td className="px-4 py-3">{index + 1}</td>
                 <td className="px-4 py-3">{user.username}</td>
                 <td className="px-4 py-3 text-gray-600">{user.email}</td>
-                <td className="px-4 py-3">{ROLE_MAP[user.roleId] || "unknown"}</td>
+                <td className="px-4 py-3">
+                  {ROLE_MAP[user.roleId] || "unknown"}
+                </td>
                 <td className="px-4 py-3">
                   <span
                     className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${
@@ -149,11 +171,12 @@ const UserManagementPage = () => {
 
       {isModalOpen && selectedUser && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg w-[400px] space-y-4">
+          <div className="bg-white p-6 rounded-lg w-[400px] space-y-4 max-h-[90vh] overflow-y-auto">
             <h2 className="text-lg font-semibold">
               Enroll Plan cho {selectedUser.username}
             </h2>
 
+            {/* Chọn gói */}
             <select
               className="w-full px-3 py-2 border rounded"
               value={formData.planId}
@@ -175,16 +198,22 @@ const UserManagementPage = () => {
               ))}
             </select>
 
-            <input
-              type="text"
-              className="w-full border px-3 py-2 rounded"
-              placeholder="Tên ngân hàng"
-              value={formData.bankName}
-              onChange={(e) =>
-                setFormData({ ...formData, bankName: e.target.value })
+            {/* Chọn ngân hàng */}
+            <Select
+              className="w-full text-sm"
+              options={bankOptions}
+              placeholder="Chọn ngân hàng..."
+              value={bankOptions.find((opt) => opt.value === formData.bankName)}
+              onChange={(selectedOption) =>
+                setFormData({ ...formData, bankName: selectedOption?.value || "" })
               }
+              menuPlacement="bottom"
+              styles={{
+                menu: (provided) => ({ ...provided, zIndex: 9999 }),
+              }}
             />
 
+            {/* Mã giao dịch ngân hàng */}
             <input
               type="text"
               className="w-full border px-3 py-2 rounded"
@@ -195,6 +224,7 @@ const UserManagementPage = () => {
               }
             />
 
+            {/* Nội dung chuyển khoản */}
             <textarea
               className="w-full border px-3 py-2 rounded"
               rows={2}
