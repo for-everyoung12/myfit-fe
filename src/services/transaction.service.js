@@ -25,3 +25,16 @@ export const createTransaction = async (transactionData) => {
   );
   return response.data;
 };
+
+export const getTransactionById = async (transactionId) => {
+  const token = localStorage.getItem('token');
+  const response = await axios.get(
+    `${API_BASE_URL}/api/v1/Transaction/${transactionId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data.data; 
+};

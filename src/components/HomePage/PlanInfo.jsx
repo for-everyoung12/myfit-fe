@@ -52,7 +52,7 @@ const PlanInfo = () => {
         {plans.map((plan) => {
           const discountedPrice = plan.price * (1 - plan.discountPercent / 100);
           const isCurrentPlan = user?.planId === plan.id || user?.planId === plan._id;
-          const isBetaPlan = plan.name === "Gói BETA Cao Cấp 3 Tháng";
+          const isBetaPlan = plan.name?.toUpperCase().includes("BETA");
 
           return (
             <div
