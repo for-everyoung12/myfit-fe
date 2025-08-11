@@ -73,12 +73,13 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<ReportsPage />} />
+          {/* Index bây giờ là Users */}
+          <Route index element={<UserManagementPage />} />
           <Route path="users" element={<UserManagementPage />} />
           <Route path="transactions" element={<TransactionPage />} />
           <Route path="plans" element={<PlanPage />} />
           <Route path="subscriptions" element={<Subcriptions />} />
-        </Route>
+      </Route>
       </Routes>
     </Suspense>
   );
