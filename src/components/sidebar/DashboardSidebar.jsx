@@ -12,7 +12,7 @@ import { AuthContext } from "../../context/AuthContext"; // Cập nhật đườ
 
 const sidebarConfig = {
   admin: [
-    // { title: "Reports", path: "/dashboard", icon: LayoutDashboard },
+    { title: "Reports", path: "/dashboard", icon: LayoutDashboard },
     { title: "Users", path: "/dashboard/users", icon: Users },
     { title: "Transactions", path: "/dashboard/transactions", icon: ReceiptText },
     { title: "Plans", path: "/dashboard/plans", icon: Package},
