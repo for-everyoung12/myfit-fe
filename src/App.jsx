@@ -74,7 +74,7 @@ function App() {
           }
         >
           {/* Index bây giờ là Users */}
-          <Route index element={<UserManagementPage />} />
+          <Route index element={<ReportsPage />} />
           <Route path="users" element={<UserManagementPage />} />
           <Route path="transactions" element={<TransactionPage />} />
           <Route path="plans" element={<PlanPage />} />

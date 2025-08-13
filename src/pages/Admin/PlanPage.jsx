@@ -32,7 +32,7 @@ export default function PlanPage() {
       setPlans(data || []);
     } catch (e) {
       console.error(e);
-      alert("Lỗi khi tải danh sách gói");
+      alert("Failed to load plans.");
     } finally {
       setLoading(false);
     }
@@ -61,10 +61,10 @@ export default function PlanPage() {
   };
 
   const handleCreate = async () => {
-    // validate đơn giản
-    if (!form.name?.trim()) return alert("Vui lòng nhập tên gói");
-    if (Number(form.durationMonths) <= 0) return alert("Thời hạn phải > 0");
-    if (Number(form.price) < 0) return alert("Giá không hợp lệ");
+    // simple validation
+    if (!form.name?.trim()) return alert("Please enter a plan name.");
+    if (Number(form.durationMonths) <= 0) return alert("Duration must be > 0.");
+    if (Number(form.price) < 0) return alert("Price is not valid.");
 
     try {
       const created = await createPlan({
@@ -77,13 +77,13 @@ export default function PlanPage() {
       setIsCreateOpen(false);
     } catch (e) {
       console.error(e);
-      alert("Tạo gói thất bại");
+      alert("Failed to create plan.");
     }
   };
 
   const handleUpdate = async () => {
     if (!selectedPlan) return;
-    if (!form.name?.trim()) return alert("Vui lòng nhập tên gói");
+    if (!form.name?.trim()) return alert("Please enter a plan name.");
 
     const id = selectedPlan.id || selectedPlan._id;
     try {
@@ -94,37 +94,37 @@ export default function PlanPage() {
         discountPercent: Number(form.discountPercent),
       });
       setPlans((prev) =>
-        prev.map((p) => ( (p.id||p._id) === (updated.id||updated._id) ? { ...p, ...updated } : p ))
+        prev.map((p) => ((p.id || p._id) === (updated.id || updated._id) ? { ...p, ...updated } : p))
       );
       setIsEditOpen(false);
       setSelectedPlan(null);
     } catch (e) {
       console.error(e);
-      alert("Cập nhật gói thất bại");
+      alert("Failed to update plan.");
     }
   };
 
   const handleDelete = async (plan) => {
     const id = plan.id || plan._id;
-    if (!confirm(`Xóa gói "${plan.name}"?`)) return;
+    if (!confirm(`Delete plan "${plan.name}"?`)) return;
     try {
       await deletePlan(id);
       setPlans((prev) => prev.filter((p) => (p.id || p._id) !== id));
     } catch (e) {
       console.error(e);
-      alert("Xóa gói thất bại");
+      alert("Failed to delete plan.");
     }
   };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Danh sách Gói Dịch Vụ</h1>
+        <h1 className="text-2xl font-bold">Plans</h1>
         <button
           onClick={openCreate}
           className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded"
         >
-          + Tạo gói
+          + Create Plan
         </button>
       </div>
 
@@ -132,12 +132,12 @@ export default function PlanPage() {
         <table className="min-w-full text-sm text-left">
           <thead className="bg-gray-100 text-gray-600 uppercase text-xs">
             <tr>
-              <th className="px-6 py-3">Tên gói</th>
-              <th className="px-6 py-3">Mô tả</th>
-              <th className="px-6 py-3">Thời hạn</th>
-              <th className="px-6 py-3">Giá</th>
-              <th className="px-6 py-3">Giảm giá</th>
-              <th className="px-6 py-3">Trạng thái</th>
+              <th className="px-6 py-3">Name</th>
+              <th className="px-6 py-3">Description</th>
+              <th className="px-6 py-3">Duration</th>
+              <th className="px-6 py-3">Price</th>
+              <th className="px-6 py-3">Discount</th>
+              <th className="px-6 py-3">Status</th>
               <th className="px-6 py-3 text-right">Actions</th>
             </tr>
           </thead>
@@ -153,9 +153,9 @@ export default function PlanPage() {
                     <td className="px-6 py-4 text-gray-600">
                       {plan.description}
                     </td>
-                    <td className="px-6 py-4">{plan.durationMonths} tháng</td>
+                    <td className="px-6 py-4">{plan.durationMonths} months</td>
                     <td className="px-6 py-4 text-green-600 font-semibold">
-                      {Number(plan.price).toLocaleString("vi-VN")}₫
+                      {Number(plan.price).toLocaleString()}₫
                     </td>
                     <td className="px-6 py-4 text-blue-600">
                       {plan.discountPercent}%
@@ -191,14 +191,14 @@ export default function PlanPage() {
             {loading && (
               <tr>
                 <td className="px-6 py-6 text-center text-gray-500" colSpan={7}>
-                  Đang tải...
+                  Loading...
                 </td>
               </tr>
             )}
             {!loading && plans.length === 0 && (
               <tr>
                 <td className="px-6 py-6 text-center text-gray-500" colSpan={7}>
-                  Chưa có gói nào
+                  No plans yet
                 </td>
               </tr>
             )}
@@ -208,20 +208,20 @@ export default function PlanPage() {
 
       {/* Modal Create */}
       {isCreateOpen && (
-        <Modal onClose={() => setIsCreateOpen(false)} title="Tạo gói mới">
+        <Modal onClose={() => setIsCreateOpen(false)} title="Create new plan">
           <PlanForm form={form} setForm={setForm} />
           <div className="flex justify-end gap-2 mt-4">
             <button
               onClick={() => setIsCreateOpen(false)}
               className="px-4 py-2 bg-gray-200 rounded"
             >
-              Hủy
+              Cancel
             </button>
             <button
               onClick={handleCreate}
               className="px-4 py-2 bg-blue-600 text-white rounded"
             >
-              Tạo
+              Create
             </button>
           </div>
         </Modal>
@@ -229,20 +229,20 @@ export default function PlanPage() {
 
       {/* Modal Edit */}
       {isEditOpen && selectedPlan && (
-        <Modal onClose={() => setIsEditOpen(false)} title={`Sửa gói: ${selectedPlan.name}`}>
+        <Modal onClose={() => setIsEditOpen(false)} title={`Edit plan: ${selectedPlan.name}`}>
           <PlanForm form={form} setForm={setForm} />
           <div className="flex justify-end gap-2 mt-4">
             <button
               onClick={() => setIsEditOpen(false)}
               className="px-4 py-2 bg-gray-200 rounded"
             >
-              Hủy
+              Cancel
             </button>
             <button
               onClick={handleUpdate}
               className="px-4 py-2 bg-blue-600 text-white rounded"
             >
-              Lưu
+              Save
             </button>
           </div>
         </Modal>
@@ -271,17 +271,17 @@ function PlanForm({ form, setForm }) {
   return (
     <div className="grid grid-cols-2 gap-4">
       <div className="col-span-2">
-        <label className="block text-sm text-gray-600 mb-1">Tên gói</label>
+        <label className="block text-sm text-gray-600 mb-1">Plan name</label>
         <input
           className="w-full border rounded px-3 py-2"
           value={form.name}
           onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
-          placeholder="Ví dụ: Gói BETA Cao Cấp 3 Tháng"
+          placeholder="e.g. Premium 3-Month Beta Plan"
         />
       </div>
 
       <div className="col-span-2">
-        <label className="block text-sm text-gray-600 mb-1">Mô tả</label>
+        <label className="block text-sm text-gray-600 mb-1">Description</label>
         <textarea
           className="w-full border rounded px-3 py-2"
           rows={3}
@@ -291,7 +291,7 @@ function PlanForm({ form, setForm }) {
       </div>
 
       <div>
-        <label className="block text-sm text-gray-600 mb-1">Thời hạn (tháng)</label>
+        <label className="block text-sm text-gray-600 mb-1">Duration (months)</label>
         <input
           type="number"
           min="1"
@@ -302,7 +302,7 @@ function PlanForm({ form, setForm }) {
       </div>
 
       <div>
-        <label className="block text-sm text-gray-600 mb-1">Giá (VNĐ)</label>
+        <label className="block text-sm text-gray-600 mb-1">Price (VND)</label>
         <input
           type="number"
           min="0"
@@ -313,7 +313,7 @@ function PlanForm({ form, setForm }) {
       </div>
 
       <div>
-        <label className="block text-sm text-gray-600 mb-1">Giảm giá (%)</label>
+        <label className="block text-sm text-gray-600 mb-1">Discount (%)</label>
         <input
           type="number"
           min="0"
