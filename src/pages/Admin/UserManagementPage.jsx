@@ -28,10 +28,8 @@ export default function UserManagementPage() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [planStatusFilter, setPlanStatusFilter] = useState("all"); // all | has | none
-  // NEW: filter by createdAt
   const [createdFrom, setCreatedFrom] = useState(""); // yyyy-mm-dd
   const [createdTo, setCreatedTo] = useState("");     // yyyy-mm-dd
-  // NEW: sort by name
   const [sortNameAsc, setSortNameAsc] = useState(true); // true = A→Z, false = Z→A
 
   const [isEnrollOpen, setIsEnrollOpen] = useState(false);
@@ -50,7 +48,9 @@ export default function UserManagementPage() {
     bankName: "",
     bankRefNumber: "",
   });
+
   const [loadingRow, setLoadingRow] = useState(null);
+  const [enrollSubmitting, setEnrollSubmitting] = useState(false);
 
   // pagination state
   const [page, setPage] = useState(1);
@@ -70,19 +70,35 @@ export default function UserManagementPage() {
     })();
   }, []);
 
+  // ---------- helpers ----------
+  const normalizeId = (obj) => ({ ...obj, id: obj?.id || obj?._id });
+
+  const refreshAndPatchUser = async (userId) => {
+    try {
+      const fresh = await getUserById(userId);
+      const norm = normalizeId(fresh || { id: userId });
+      setUsers((prev) => prev.map((u) => (u.id === norm.id ? { ...u, ...norm } : u)));
+      setSelectedUser((prev) => (prev && prev.id === norm.id ? { ...prev, ...norm } : prev));
+      return norm;
+    } catch (err) {
+      console.error("Refresh user failed", err);
+      // không ném lỗi để UI tiếp tục đóng modal; chỉ log
+      return null;
+    }
+  };
+
   // filtered users (search + plan status + createdAt + sort name)
   const filteredUsers = useMemo(() => {
     const q = searchTerm.trim().toLowerCase();
 
     const fromDate = createdFrom ? new Date(createdFrom) : null;
-    // include full last day
     const toDate = createdTo ? new Date(createdTo + "T23:59:59.999") : null;
 
     return (users || [])
       .filter((u) => {
         const hitText =
           !q ||
-          u.id?.toLowerCase().includes(q) ||
+          u.id?.toLowerCase?.().includes(q) ||
           (u.username || "").toLowerCase().includes(q) ||
           (u.email || "").toLowerCase().includes(q);
 
@@ -92,7 +108,6 @@ export default function UserManagementPage() {
           (planStatusFilter === "has" && hasPlan) ||
           (planStatusFilter === "none" && !hasPlan);
 
-        // createdAt filter
         const cAt = u.createdAt ? new Date(u.createdAt) : null;
         const fromOk = !fromDate || (cAt && cAt >= fromDate);
         const toOk = !toDate || (cAt && cAt <= toDate);
@@ -202,7 +217,7 @@ export default function UserManagementPage() {
     setLoadingRow(selectedUser.id);
     try {
       const updated = await updateUser(selectedUser.id, editForm);
-      const norm = { ...updated, id: updated?.id || updated?._id || selectedUser.id };
+      const norm = normalizeId(updated || selectedUser);
       setUsers((prev) => prev.map((u) => (u.id === norm.id ? { ...u, ...norm } : u)));
       setIsEditOpen(false);
       alert("User updated successfully.");
@@ -236,12 +251,27 @@ export default function UserManagementPage() {
       return;
     }
     try {
+      setEnrollSubmitting(true);
+      // 1) gọi API enroll
       await enrollPlan({ ...formData, userId: selectedUser.id });
-      alert("Enroll succeeded!");
+
+      // 2) fetch user mới nhất & patch lại list để UI cập nhật ngay
+      const fresh = await refreshAndPatchUser(selectedUser.id);
+
+      // 3) đóng modal sau khi đã patch state (đảm bảo table hiển thị plan mới ngay lập tức)
       setIsEnrollOpen(false);
+
+      // optional: nếu đang mở modal Plan Detail của chính user đó, cũng cập nhật luôn
+      if (isPlanOpen && planDetailUser?.id === selectedUser.id && fresh) {
+        setPlanDetailUser(fresh);
+      }
+
+      alert("Enroll succeeded!");
     } catch (e) {
       console.error(e);
       alert("Enroll failed.");
+    } finally {
+      setEnrollSubmitting(false);
     }
   };
 
@@ -273,7 +303,7 @@ export default function UserManagementPage() {
             className="px-3 py-1 text-sm border rounded"
           />
 
-          {/* NEW: createdAt filters */}
+          {/* createdAt filters */}
           <input
             type="date"
             value={createdFrom}
@@ -289,7 +319,7 @@ export default function UserManagementPage() {
             title="Created to"
           />
 
-          {/* NEW: sort name A→Z / Z→A */}
+          {/* sort name A→Z / Z→A */}
           <button
             onClick={() => setSortNameAsc((prev) => !prev)}
             className="px-3 py-1 text-sm border rounded bg-gray-100 hover:bg-gray-200"
@@ -401,7 +431,7 @@ export default function UserManagementPage() {
             onChange={(e) => {
               const v = Number(e.target.value);
               setPageSize(v);
-              setPage(1); // reset to first page when size changes
+              setPage(1);
             }}
           >
             <option value={10}>10</option>
@@ -579,8 +609,20 @@ export default function UserManagementPage() {
             </div>
 
             <div className="flex justify-end gap-2">
-              <button onClick={() => setIsEnrollOpen(false)} className="px-4 py-2 bg-gray-200 rounded">Cancel</button>
-              <button onClick={handleEnrollSubmit} className="px-4 py-2 bg-green-600 text-white rounded">Confirm</button>
+              <button
+                onClick={() => setIsEnrollOpen(false)}
+                className="px-4 py-2 bg-gray-200 rounded"
+                disabled={enrollSubmitting}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleEnrollSubmit}
+                className="px-4 py-2 bg-green-600 text-white rounded disabled:opacity-60"
+                disabled={enrollSubmitting}
+              >
+                {enrollSubmitting ? "Processing…" : "Confirm"}
+              </button>
             </div>
           </div>
         </div>
