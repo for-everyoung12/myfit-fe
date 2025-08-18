@@ -555,7 +555,7 @@ export default function UserManagementPage() {
                   ...prev,
                   planId: chosen.id,
                   amount: final,
-                  paymentContent: `TOPUP ${chosen.id} ${selectedUser.id}`,
+                  paymentContent: `PLAN ${chosen.id} ${selectedUser.id}`,
                 }));
               }}
             >
