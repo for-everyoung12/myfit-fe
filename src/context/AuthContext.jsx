@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
+import { setUserId, setUserProperties, event } from '../lib/analytics/ga';
 
 export const AuthContext = createContext();
 
@@ -19,6 +20,10 @@ export const AuthProvider = ({ children }) => {
         setEmail(decoded?.email || '');
         setRoleId(decoded?.role || '');
         setIsLoggedIn(true);
+
+        // 🔹 Track user session khi reload vẫn còn token
+        setUserId(decoded?.id || decoded?.sub || decoded?.email);
+        setUserProperties({ role: decoded?.role || '', email: decoded?.email || '' });
       } catch (error) {
         console.error('Invalid token:', error);
         logout();
@@ -35,6 +40,11 @@ export const AuthProvider = ({ children }) => {
       setEmail(decoded?.email || '');
       setRoleId(decoded?.role || '');
       setIsLoggedIn(true);
+
+      // 🔹 Track login event
+      setUserId(decoded?.id || decoded?.sub || decoded?.email);
+      setUserProperties({ role: decoded?.role || '', email: decoded?.email || '' });
+      event('login', { method: 'jwt' });
     } catch (error) {
       console.error('Invalid token during login:', error);
     }
@@ -46,6 +56,11 @@ export const AuthProvider = ({ children }) => {
     setUsername('');
     setEmail('');
     setRoleId('');
+
+    // 🔹 Track logout event
+    event('logout');
+    // reset userId
+    setUserId(null);
   };
 
   return (
