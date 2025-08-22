@@ -5,6 +5,7 @@ import DashboardLayout from './layouts/DashboardLayout';
 import { AuthContext } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import ScrollToTop from "./components/ScrollToTop";
+import FeedbackPage from './pages/Admin/FeedbackPage';
 // Public pages
 const HomePage = lazy(() => import('./pages/Home'));
 const Dowload = lazy(() => import('./pages/Dowload'));
@@ -76,6 +77,7 @@ function App() {
           {/* Index bây giờ là Users */}
           <Route index element={<ReportsPage />} />
           <Route path="users" element={<UserManagementPage />} />
+          <Route path='feedback' element={<FeedbackPage/>} />
           <Route path="transactions" element={<TransactionPage />} />
           <Route path="plans" element={<PlanPage />} />
           <Route path="subscriptions" element={<Subcriptions />} />
