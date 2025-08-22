@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { HeroSection } from '../components/HomePage/HeroSection';
 import { ServiceInfo } from '../components/HomePage/ServiceInfo';
 import PlanInfo from '../components/HomePage/PlanInfo';
+import Feedback from '../components/HomePage/Feedback';
 
 const Home = () => {
   const location = useLocation();
@@ -22,6 +23,7 @@ const Home = () => {
     <div>
       <HeroSection />
       <ServiceInfo />
+      <Feedback/>
       <div id="plan">
         <PlanInfo />
       </div>

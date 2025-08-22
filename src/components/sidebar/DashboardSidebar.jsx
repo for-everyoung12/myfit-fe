@@ -4,6 +4,7 @@ import {
   ReceiptText,
   Package,
   DollarSign,
+  MessageSquareQuote,
   LogOut,
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -14,8 +15,9 @@ const sidebarConfig = {
   admin: [
     { title: "Reports", path: "/dashboard", icon: LayoutDashboard },
     { title: "Users", path: "/dashboard/users", icon: Users },
+    { title: 'Feedback', path: '/dashboard/feedback', icon: MessageSquareQuote },
     { title: "Transactions", path: "/dashboard/transactions", icon: ReceiptText },
-    { title: "Plans", path: "/dashboard/plans", icon: Package},
+    { title: "Plans", path: "/dashboard/plans", icon: Package },
     { title: "Subscriptions", path: "/dashboard/subscriptions", icon: DollarSign },
   ],
 };
@@ -29,13 +31,13 @@ export function DashboardSidebar({
   const navigate = useNavigate();
   const menuItems = sidebarConfig[role] || [];
 
-  const { logout } = useContext(AuthContext); 
+  const { logout } = useContext(AuthContext);
 
   const handleNavigation = (path) => navigate(path);
 
   const handleLogout = () => {
-    logout();      
-    navigate("/");   
+    logout();
+    navigate("/");
   };
 
   return (
@@ -65,11 +67,10 @@ export function DashboardSidebar({
             <button
               key={item.title}
               onClick={() => handleNavigation(item.path)}
-              className={`flex items-center gap-3 px-3 py-2 w-full text-left rounded-lg transition-colors ${
-                location.pathname === item.path
+              className={`flex items-center gap-3 px-3 py-2 w-full text-left rounded-lg transition-colors ${location.pathname === item.path
                   ? "bg-gray-100"
                   : "hover:bg-gray-100"
-              }`}
+                }`}
             >
               <item.icon className="h-4 w-4" />
               <span className="font-medium">{item.title}</span>
